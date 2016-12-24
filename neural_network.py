@@ -77,14 +77,11 @@ class Perceptron:
             self.nb_right += 1
         else:
             self.nb_wrong += 1
-
         # 2. Pour chaque neurone i de la couche n de sortie, calculer l'erreur
         self.computeOutputError(target, final_output)
-
         # 3. Rétro-propager couche par couche l'erreur à travers chaque neurone i de chaque couche l du réseau
-        self.propagate()
+        self.retroPropagate()
         print "ERRORS", self.errors
-
         # 4. Modifier chaque poids
         self.updateWeight()
     
@@ -131,15 +128,14 @@ class Perceptron:
         self.errors.insert(0, error)
 
     # Rétro-propagation couche par couche l'erreur à travers chaque neurone i de chaque couche l du réseau
-    def propagate(self):
+    def retroPropagate(self):
         for l in range(self.nb_layers-2, -1, -1):
             error = []
             for i in range(len(self.layers[l])):
-                y = self.outputs[l][i]
-                weights = self.layers[l][i]
-                weights = weights[0:len(self.errors[0])]
-                somme = numpy.dot(self.errors[0], weights)
-                delta = y*(1-y)*somme
+                y = self.outputs[l][i]          # Sortie du neurone courant
+                weights = self.layers[l+1][i]   # Poids du neurone i de la couche d'au-dessus
+                weights = weights[0:(len(weights)-1)] # Suppression du biais ?
+                delta = y*(1-y)*numpy.dot(self.errors[0], weights)
                 error.append(delta)
             self.errors.insert(0, error)
 
@@ -147,7 +143,9 @@ class Perceptron:
         for l in range(self.nb_layers):
             for i in range(len(self.layers[l])):
                 for j in range(len(self.layers[l][i])):
-                    print "POIDS", j, "DE LA COUCHE", l, "NEURONE", i, ":", self.layers[l][i][j];
+                    # TODO
+                    sum = 0
+                    # print "POIDS", j, "DE LA COUCHE", l, "NEURONE", i, ":", self.layers[l][i][j];
                     # Calcul de la variation
                     # print "VARIATION POIDS", j, "DE LA COUCHE", l, "NEURONE", i, ":", self.variation(l, i, j);
 

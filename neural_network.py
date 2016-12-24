@@ -13,7 +13,7 @@ INPUT = 784
 # Nombre de neurones pour la couche d'entrée
 INPUT_NEURONS = 10
 # Nombre de couches cachés (sachant que les couches "visibles" sont au nombre de deux : couche d'entrée et couche de sortie)
-HIDDEN_LAYERS = 1
+HIDDEN_LAYERS = 3
 # Nombre de neurones par couche cachée
 HIDDEN_NEURONS = 10
 # Nombre de neurones pour la couche de sortie
@@ -89,7 +89,7 @@ class Perceptron:
         # 4. Modifier chaque poids
         self.updateWeight()
 
-        print "RESEAU", self.layers
+        # print "RESEAU", self.layers
         print "LUS :", self.nb_read, "BONS :", self.nb_right, "FAUX :", self.nb_wrong
         e = (self.nb_wrong / self.nb_read) * 100
         print "POURCENTAGE D'ERREUR :", e

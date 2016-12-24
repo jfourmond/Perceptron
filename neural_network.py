@@ -84,6 +84,8 @@ class Perceptron:
         print "ERRORS", self.errors
         # 4. Modifier chaque poids
         self.updateWeight()
+
+        print "RESEAU", self.layers
     
     # Calcul de la sortie de chaque neurone i de chaque couche l du réseau par propagation couche par couche de l'activité par l'entrée "input"
     def computeOutput(self, input):
@@ -139,20 +141,17 @@ class Perceptron:
                 error.append(delta)
             self.errors.insert(0, error)
 
+    # Mise à jour de tous les poids du réseau
     def updateWeight(self):
         for l in range(self.nb_layers):
             for i in range(len(self.layers[l])):
                 for j in range(len(self.layers[l][i])):
-                    # TODO
-                    sum = 0
-                    # print "POIDS", j, "DE LA COUCHE", l, "NEURONE", i, ":", self.layers[l][i][j];
-                    # Calcul de la variation
-                    # print "VARIATION POIDS", j, "DE LA COUCHE", l, "NEURONE", i, ":", self.variation(l, i, j);
+                    variation = self.variation(l, i, j) # V_poids = poids' - poids '' -> poids'' = poids - V_poids
+                    self.layers[l][i][j] = self.layers[l][i][j] - variation
 
-    # Calcul de la variation du poids "poids", du neurone "neurone", de la couche "couche"
-    def variation(self, couche, neurone, poids):
-        # p = self.couches[couche][neurone][poids]  POIDS
-        return LEARNING_STEP * self.errors[couche][poids] * self.outputs[couche][neurone]
+    # Calcul de la variation du poids "weight", du neurone "neuron", de la couche "layer"
+    def variation(self, layer, neuron, weight):
+        return LEARNING_STEP * self.errors[layer][neuron] * self.outputs[layer-1][neuron]
 
     def anylisis(self, final_output):
         return (numpy.argmax(final_output))

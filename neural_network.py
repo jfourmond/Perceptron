@@ -1,5 +1,6 @@
 # coding: utf8
 # !/usr/bin/env python
+from __future__ import division
 
 import gzip # pour décompresser les données
 import cPickle # pour désérialiser les données
@@ -20,7 +21,7 @@ OUTPUT_NEURONS = 10
 # Pas d'apprentissage
 LEARNING_STEP = 0.1
 # Nombre d'itérations
-ITERATIONS = 1
+ITERATIONS = 1000
 
 class Perceptron:
 	# Le Perceptrion multi-couches, c'est :
@@ -51,6 +52,7 @@ class Perceptron:
         self.layers.append(numpy.zeros((self.output_neurons, len(self.layers[l])+1)))
         print "RESEAU", self.layers
 
+        self.nb_read = 0
         self.nb_wrong = 0
         self.nb_right = 0
 
@@ -65,7 +67,7 @@ class Perceptron:
         label = data[0][1][index]
         # on récupère à quel chiffre cela correspond (position du 1 dans label)
         label = numpy.argmax(label)
-        print "LECTURE CHIFFRE", label
+        # print "LECTURE CHIFFRE", label
         target[label] = 1
 
         # 1. Calcul de la sortie de chaque neurone i de chaque couche l du réseau par propagation couche par couche de l'activité
@@ -73,19 +75,24 @@ class Perceptron:
         print "SORTIE FINALE :", final_output
         print "TARGET :", target
         value = self.anylisis(final_output)
+        print "VALUE :", value
         if value == label :
             self.nb_right += 1
         else:
             self.nb_wrong += 1
+        self.nb_read += 1
         # 2. Pour chaque neurone i de la couche n de sortie, calculer l'erreur
         self.computeOutputError(target, final_output)
         # 3. Rétro-propager couche par couche l'erreur à travers chaque neurone i de chaque couche l du réseau
         self.retroPropagate()
-        print "ERRORS", self.errors
+        # print "ERRORS", self.errors
         # 4. Modifier chaque poids
         self.updateWeight()
 
         print "RESEAU", self.layers
+        print "LUS :", self.nb_read, "BONS :", self.nb_right, "FAUX :", self.nb_wrong
+        e = (self.nb_wrong / self.nb_read) * 100
+        print "POURCENTAGE D'ERREUR :", e
     
     # Calcul de la sortie de chaque neurone i de chaque couche l du réseau par propagation couche par couche de l'activité par l'entrée "input"
     def computeOutput(self, input):
@@ -108,7 +115,6 @@ class Perceptron:
         for i in range(self.output_neurons):
             last_output.append(self.sigmoid(self.nb_layers-1, i, input))
         self.outputs.append(last_output)
-        print "OUTPUTS", self.outputs
         # Retourne la sortie de la couche de sortie
         return last_output
 

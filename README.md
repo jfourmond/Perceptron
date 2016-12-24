@@ -13,6 +13,10 @@ Dans le cadre de l'Unité d'Enseignement **Intelligence Bio-Inspirée** du [Mast
 
 L'objectif de ce projet est d'implémenter l'algorithme de perceptron multi-couches vu en cours, de comprendre son fonctionnement et ses limites.
 
+## Pourcentage d'erreurs en fonction de différents paramètres
+
+[Tableur regroupant les résultats](https://docs.google.com/spreadsheets/d/1DXshHQmfKDHbYvKog93c83oNjd8v94TPZoVbogYacHA/edit?usp=sharing)
+
 ### Compilation & Exécution
 
 Le programme s'exécute sans arguments, en ligne de commande :

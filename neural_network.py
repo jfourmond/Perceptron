@@ -13,15 +13,15 @@ INPUT = 784
 # Nombre de neurones pour la couche d'entrée
 INPUT_NEURONS = 10
 # Nombre de couches cachés (sachant que les couches "visibles" sont au nombre de deux : couche d'entrée et couche de sortie)
-HIDDEN_LAYERS = 3
+HIDDEN_LAYERS = 1
 # Nombre de neurones par couche cachée
-HIDDEN_NEURONS = 10
+HIDDEN_NEURONS = 20
 # Nombre de neurones pour la couche de sortie
 OUTPUT_NEURONS = 10
 # Pas d'apprentissage
 LEARNING_STEP = 0.1
 # Nombre d'itérations
-ITERATIONS = 1000
+ITERATIONS = 10
 
 class Perceptron:
 	# Le Perceptrion multi-couches, c'est :
@@ -49,7 +49,7 @@ class Perceptron:
             self.layers.append(numpy.zeros((self.hidden_neurons, len(self.layers[l])+1)))
             l += 1
         # Couche de sortie (+1 pour le poids du biais)
-        self.layers.append(numpy.zeros((self.output_neurons, len(self.layers[l])+1)))
+        self.layers.append(numpy.zeros((self.output_neurons, self.hidden_neurons+1)))
         print "RESEAU", self.layers
 
         self.nb_read = 0
@@ -85,14 +85,9 @@ class Perceptron:
         self.computeOutputError(target, final_output)
         # 3. Rétro-propager couche par couche l'erreur à travers chaque neurone i de chaque couche l du réseau
         self.retroPropagate()
-        # print "ERRORS", self.errors
+        print "ERRORS", self.errors
         # 4. Modifier chaque poids
         self.updateWeight()
-
-        # print "RESEAU", self.layers
-        print "LUS :", self.nb_read, "BONS :", self.nb_right, "FAUX :", self.nb_wrong
-        e = (self.nb_wrong / self.nb_read) * 100
-        print "POURCENTAGE D'ERREUR :", e
     
     # Calcul de la sortie de chaque neurone i de chaque couche l du réseau par propagation couche par couche de l'activité par l'entrée "input"
     def computeOutput(self, input):
@@ -140,9 +135,10 @@ class Perceptron:
         for l in range(self.nb_layers-2, -1, -1):
             error = []
             for i in range(len(self.layers[l])):
+                weights = self.weights(l+1, i)  # Récupération des poids i des neurones de la couche d'au-dessus
                 y = self.outputs[l][i]          # Sortie du neurone courant
-                weights = self.layers[l+1][i]   # Poids du neurone i de la couche d'au-dessus
-                weights = weights[0:(len(weights)-1)] # Suppression du biais ?
+                # weights = self.layers[l+1][i]   # Poids du neurone i de la couche d'au-dessus
+                # weights = weights[0:(len(weights)-1)] # Suppression du biais ?
                 delta = y*(1-y)*numpy.dot(self.errors[0], weights)
                 error.append(delta)
             self.errors.insert(0, error)
@@ -151,13 +147,20 @@ class Perceptron:
     def updateWeight(self):
         for l in range(self.nb_layers):
             for i in range(len(self.layers[l])):
-                for j in range(len(self.layers[l][i])):
+                for j in range(len(self.layers[l][i])-1):
                     variation = self.variation(l, i, j) # V_poids = poids' - poids '' -> poids'' = poids - V_poids
                     self.layers[l][i][j] = self.layers[l][i][j] - variation
 
     # Calcul de la variation du poids "weight", du neurone "neuron", de la couche "layer"
     def variation(self, layer, neuron, weight):
         return LEARNING_STEP * self.errors[layer][neuron] * self.outputs[layer-1][neuron]
+
+    # Récupération d'une liste des poids "weight" des neurones de la couche "layer"
+    def weights(self, layer, weight):
+        weights = []
+        for i in range(len(self.layers[layer])):
+            weights.append(self.layers[layer][i][weight])
+        return weights
 
     def anylisis(self, final_output):
         return (numpy.argmax(final_output))
@@ -177,8 +180,10 @@ if __name__ == '__main__':
     n = numpy.shape(data[0][0])[0]
     # on créé un vecteur de (ITERATIONS,) valeurs entières prises aléatoirement entre 0 et n-1
     indices = numpy.random.randint(n,size=(ITERATIONS,))
-    print indices
     # i va valoir itérativement les valeurs dans indices / NB on aurait aussi pu écrire "for j in xrange(10): i = indices[j]"
     for i in indices:
         # appel de la fonction d'affichage
         p.learn(i)
+    print "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
+    e = (p.nb_wrong / p.nb_read) * 100
+    print "POURCENTAGE D'ERREUR :", e

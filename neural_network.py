@@ -1,5 +1,11 @@
 # coding: utf8
 # !/usr/bin/env python
+# ------------------------------------------------------------------------
+# Multi-Layer Perceptron
+# By FOURMOND Jérôme
+#
+# Distribué sous licence BSD.
+# ------------------------------------------------------------------------
 from __future__ import division
 
 import gzip # pour décompresser les données
@@ -15,13 +21,13 @@ INPUT_NEURONS = 10
 # Nombre de couches cachés (sachant que les couches "visibles" sont au nombre de deux : couche d'entrée et couche de sortie)
 HIDDEN_LAYERS = 1
 # Nombre de neurones par couche cachée
-HIDDEN_NEURONS = 20
+HIDDEN_NEURONS = 10
 # Nombre de neurones pour la couche de sortie
 OUTPUT_NEURONS = 10
 # Pas d'apprentissage
 LEARNING_STEP = 0.1
 # Nombre d'itérations
-ITERATIONS = 10
+ITERATIONS = 1000
 
 class Perceptron:
 	# Le Perceptrion multi-couches, c'est :
@@ -70,8 +76,10 @@ class Perceptron:
         # print "LECTURE CHIFFRE", label
         target[label] = 1
 
+        self.current_input = image
         # 1. Calcul de la sortie de chaque neurone i de chaque couche l du réseau par propagation couche par couche de l'activité
-        final_output = self.computeOutput(image)
+        final_output = self.computeOutput(self.current_input)
+        self.current_input = numpy.append(self.current_input, 1)
         print "SORTIE FINALE :", final_output
         print "TARGET :", target
         value = self.anylisis(final_output)
@@ -85,7 +93,7 @@ class Perceptron:
         self.computeOutputError(target, final_output)
         # 3. Rétro-propager couche par couche l'erreur à travers chaque neurone i de chaque couche l du réseau
         self.retroPropagate()
-        print "ERRORS", self.errors
+        # print "ERRORS", self.errors
         # 4. Modifier chaque poids
         self.updateWeight()
     
@@ -145,15 +153,28 @@ class Perceptron:
 
     # Mise à jour de tous les poids du réseau
     def updateWeight(self):
-        for l in range(self.nb_layers):
+        # Mise à jour de la couche d'entrée
+        for i in range(1, len(self.layers[0])):
+            for j in range(len(self.layers[0][i])):
+                # La variation du poids j, du neurone i, de la couche 0 
+                variation = self.variationInput(i, j)   # V_poids = poids' - poids '' -> poids'' = poids - V_poids
+                self.layers[0][i][j] = self.layers[0][i][j] - variation
+
+        # Mise à jour des autres couches
+        for l in range(1, self.nb_layers):
             for i in range(len(self.layers[l])):
                 for j in range(len(self.layers[l][i])-1):
+                    # La variation du poids j, du neurone i, de la couche l 
                     variation = self.variation(l, i, j) # V_poids = poids' - poids '' -> poids'' = poids - V_poids
                     self.layers[l][i][j] = self.layers[l][i][j] - variation
 
     # Calcul de la variation du poids "weight", du neurone "neuron", de la couche "layer"
     def variation(self, layer, neuron, weight):
-        return LEARNING_STEP * self.errors[layer][neuron] * self.outputs[layer-1][neuron]
+        return LEARNING_STEP * self.errors[layer][neuron] * self.outputs[layer-1][weight]
+
+    # Calcul de la variation du poids "weight", du neurone "neuron", de la couche d'entrée
+    def variationInput(self, neuron, weight):
+        return LEARNING_STEP * self.errors[0][neuron] * self.current_input[weight]
 
     # Récupération d'une liste des poids "weight" des neurones de la couche "layer"
     def weights(self, layer, weight):
@@ -184,6 +205,7 @@ if __name__ == '__main__':
     for i in indices:
         # appel de la fonction d'affichage
         p.learn(i)
+    print p.layers
     print "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
     e = (p.nb_wrong / p.nb_read) * 100
     print "POURCENTAGE D'ERREUR :", e

@@ -1,6 +1,6 @@
 # Perceptron
 Projet d'Intelligence Bio-Inspirée sous la direction de :
-- [Dr. LEFORT Mathieu](http://liris.cnrs.fr/mathieu.lefort/),
+- [Dr. LEFORT Mathieu](http://liris.cnrs.fr/mathieu.lefort/)
 
 Par : 
 - [FOURMOND Jérôme](https://github.com/jfourmond/)
@@ -12,6 +12,10 @@ Dans le cadre de l'Unité d'Enseignement **Intelligence Bio-Inspirée** du [Mast
 ## Objectif
 
 L'objectif de ce projet est d'implémenter l'algorithme de perceptron multi-couches vu en cours, de comprendre son fonctionnement et ses limites.
+
+## Sujet
+
+[Sujet 2016](https://github.com/jfourmond/Perceptron/blob/master/projet.pdf)
 
 ## Pourcentage d'erreurs en fonction de différents paramètres
 

@@ -27,9 +27,9 @@ OUTPUT_NEURONS = 10
 # Pas d'apprentissage
 LEARNING_STEP = 0.1
 # Nombre d'itérations d'apprentissage
-LEARNING_ITERATIONS = 1000
+LEARNING_ITERATIONS = 100000
 # Nombre d'itérations de tests
-TEST_ITERATIONS = 10
+TEST_ITERATIONS = 100
 
 class Perceptron:
 	# Le Perceptrion multi-couches, c'est :
@@ -106,7 +106,7 @@ class Perceptron:
         # print "SORTIE FINALE :", final_output
         # print "TARGET :", target
         value = self.anylisis(final_output)
-        print "VALUE :", value, ", LABEL :", label
+        print "ANALYSIS :", value, ", TARGET :", label
         if value == label :
             self.nb_right += 1
         else:

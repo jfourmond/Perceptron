@@ -19,7 +19,7 @@ INPUT = 784
 # Nombre de neurones pour la couche d'entrée
 INPUT_NEURONS = 10
 # Nombre de couches cachés (sachant que les couches "visibles" sont au nombre de deux : couche d'entrée et couche de sortie)
-HIDDEN_LAYERS = 1
+HIDDEN_LAYERS = 0
 # Nombre de neurones par couche cachée
 HIDDEN_NEURONS = 10
 # Nombre de neurones pour la couche de sortie
@@ -27,7 +27,7 @@ OUTPUT_NEURONS = 10
 # Pas d'apprentissage
 LEARNING_STEP = 0.1
 # Nombre d'itérations
-ITERATIONS = 1000
+ITERATIONS = 100000
 
 class Perceptron:
 	# Le Perceptrion multi-couches, c'est :
@@ -49,13 +49,13 @@ class Perceptron:
         l = 0
         self.layers = []
         # Couche d'input (+1 pour le poids du biais)
-        self.layers.append(numpy.zeros((self.input_neurons, INPUT+1)))
+        self.layers.append(numpy.random.randn(self.input_neurons, INPUT+1))
         # Couche(s) cachée(s) (+1 pour le poids du biais)
         for i in range (0, self.hidden_layers):
-            self.layers.append(numpy.zeros((self.hidden_neurons, len(self.layers[l])+1)))
+            self.layers.append(numpy.random.randn(self.hidden_neurons, len(self.layers[l])+1))
             l += 1
         # Couche de sortie (+1 pour le poids du biais)
-        self.layers.append(numpy.zeros((self.output_neurons, self.hidden_neurons+1)))
+        self.layers.append(numpy.random.randn(self.output_neurons, self.hidden_neurons+1))
         print "RESEAU", self.layers
 
         self.nb_read = 0
@@ -70,16 +70,15 @@ class Perceptron:
         # Dans la base d'apprentissage (premier [0]), dans la base d'image (deuxième [0]), on récupère l'image à [index]
         image = data[0][0][index]
         # Dans la base d'apprentissage ([0]), dans la base des labels ([1]), on récupère le label à [index]
-        label = data[0][1][index]
+        target = data[0][1][index]
         # on récupère à quel chiffre cela correspond (position du 1 dans label)
-        label = numpy.argmax(label)
-        # print "LECTURE CHIFFRE", label
-        target[label] = 1
+        label = numpy.argmax(target)
 
         self.current_input = image
         # 1. Calcul de la sortie de chaque neurone i de chaque couche l du réseau par propagation couche par couche de l'activité
         final_output = self.computeOutput(self.current_input)
         self.current_input = numpy.append(self.current_input, 1)
+        
         print "SORTIE FINALE :", final_output
         print "TARGET :", target
         value = self.anylisis(final_output)
@@ -96,37 +95,49 @@ class Perceptron:
         # print "ERRORS", self.errors
         # 4. Modifier chaque poids
         self.updateWeight()
+        print "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
+        e = (p.nb_wrong / p.nb_read) * 100
+        print "POURCENTAGE D'ERREUR :", e
     
     # Calcul de la sortie de chaque neurone i de chaque couche l du réseau par propagation couche par couche de l'activité par l'entrée "input"
     def computeOutput(self, input):
+        # Ajout du biais à l'input
+        input = numpy.append(input, 1)
         self.outputs = []
-        # 1. Calcul de la sortie de chaque neurone i de la couche d'entrée
         last_output = []
+
+        # 1. Calcul de la sortie de chaque neurone i de la couche d'entrée
         for i in range(self.input_neurons):
             last_output.append(self.sigmoid(0, i, input))
-        input = numpy.array(last_output)    # L'input devient l'output de la couche précédente
+        last_output.append(1) # Ajout du biais
+        last_output = numpy.array(last_output)
+        input = last_output   # L'input devient l'output de la couche précédente
         self.outputs.append(last_output)
+
         # 2. Calcul de la sortie de chaque neurone i de chaque couche l cachée
         for l in range(self.hidden_layers):
             last_output = []
             for i in range(self.hidden_neurons):
                 last_output.append(self.sigmoid(l+1, i, input))
-            input = numpy.array(last_output) # L'input devient l'output de la couche précédente
+            last_output.append(1) # Ajout du biais
+            last_output = numpy.array(last_output)
+            input = last_output # L'input devient l'output de la couche précédente
             self.outputs.append(last_output)
+
         # 3. Calcul de la sortie de chaque neurone i de la couche de sortie
         last_output = []
         for i in range(self.output_neurons):
             last_output.append(self.sigmoid(self.nb_layers-1, i, input))
+        last_output = numpy.array(last_output)
         self.outputs.append(last_output)
         # Retourne la sortie de la couche de sortie
         return last_output
 
     # Calcul de la sortie du neurone "neuron" de la couche "layer" par l'entrée "input"
     def sigmoid(self, layer, neuron, input):
-        input = numpy.append(input, 1) # Ajout du biais
         output = numpy.dot(self.layers[layer][neuron], input)
         output = math.exp(-1. * output)
-        output = 1. / (1. + output)
+        output = 1 / (1  + output)
         return output
 
     # Calcul de l'erreur des neurones de la couche de sortie
@@ -154,19 +165,19 @@ class Perceptron:
     # Mise à jour de tous les poids du réseau
     def updateWeight(self):
         # Mise à jour de la couche d'entrée
-        for i in range(1, len(self.layers[0])):
+        for i in range(len(self.layers[0])):
             for j in range(len(self.layers[0][i])):
                 # La variation du poids j, du neurone i, de la couche 0 
                 variation = self.variationInput(i, j)   # V_poids = poids' - poids '' -> poids'' = poids - V_poids
-                self.layers[0][i][j] = self.layers[0][i][j] - variation
+                self.layers[0][i][j] = self.layers[0][i][j] + variation
 
         # Mise à jour des autres couches
         for l in range(1, self.nb_layers):
             for i in range(len(self.layers[l])):
-                for j in range(len(self.layers[l][i])-1):
+                for j in range(len(self.layers[l][i])):
                     # La variation du poids j, du neurone i, de la couche l 
                     variation = self.variation(l, i, j) # V_poids = poids' - poids '' -> poids'' = poids - V_poids
-                    self.layers[l][i][j] = self.layers[l][i][j] - variation
+                    self.layers[l][i][j] = self.layers[l][i][j] + variation
 
     # Calcul de la variation du poids "weight", du neurone "neuron", de la couche "layer"
     def variation(self, layer, neuron, weight):
@@ -205,7 +216,3 @@ if __name__ == '__main__':
     for i in indices:
         # appel de la fonction d'affichage
         p.learn(i)
-    print p.layers
-    print "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
-    e = (p.nb_wrong / p.nb_read) * 100
-    print "POURCENTAGE D'ERREUR :", e

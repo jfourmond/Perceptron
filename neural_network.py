@@ -89,6 +89,8 @@ class Perceptron:
         final_output = self.computeOutput(image)
         # ... POUR DEBOGAGE ...
         value = self.anylisis(final_output)
+        global LAST_VALUE
+        global OCC
         if value == LAST_VALUE:
             OCC += 1
         else:
@@ -102,7 +104,7 @@ class Perceptron:
         # 4. Modifier chaque poids
         self.updateWeight()
         # ... POUR DEBOGAGE ...
-        if OCC > 5:
+        if OCC > 50:
             print "DETECTION D'UN COMPORTEMENT INHABITUEL..."
     # FIN METHODE learn
 

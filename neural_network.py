@@ -29,7 +29,7 @@ LEARNING_STEP = 0.1
 # Nombre d'itérations d'apprentissage
 LEARNING_ITERATIONS = 100000
 # Nombre d'itérations de tests
-TEST_ITERATIONS = 100
+TEST_ITERATIONS = 1000
 
 class Perceptron:
 	# Le Perceptrion multi-couches, c'est :

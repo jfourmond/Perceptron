@@ -19,7 +19,7 @@ INPUT = 784
 # Nombre de neurones pour la couche d'entrée
 INPUT_NEURONS = 10
 # Nombre de couches cachées (sachant que les couches "visibles" sont au nombre de deux : couche d'entrée et couche de sortie)
-HIDDEN_LAYERS = 0
+HIDDEN_LAYERS = 7
 # Nombre de neurones par couche cachée
 HIDDEN_NEURONS = 10
 # Nombre de neurones pour la couche de sortie
@@ -93,6 +93,7 @@ class Perceptron:
             OCC += 1
         else:
             OCC = 0
+        LAST_VALUE = value
         self.current_input = numpy.append(image, 1)
         # 2. Pour chaque neurone i de la couche n de sortie, calculer l'erreur
         self.computeOutputError(target, final_output)
@@ -101,7 +102,7 @@ class Perceptron:
         # 4. Modifier chaque poids
         self.updateWeight()
         # ... POUR DEBOGAGE ...
-        if OCC > 10:
+        if OCC > 5:
             print "DETECTION D'UN COMPORTEMENT INHABITUEL..."
     # FIN METHODE learn
 

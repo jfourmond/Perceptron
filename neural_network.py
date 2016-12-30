@@ -19,7 +19,7 @@ INPUT = 784
 # Nombre de neurones pour la couche d'entrée
 INPUT_NEURONS = 10
 # Nombre de couches cachées (sachant que les couches "visibles" sont au nombre de deux : couche d'entrée et couche de sortie)
-HIDDEN_LAYERS = 0
+HIDDEN_LAYERS = 1
 # Nombre de neurones par couche cachée
 HIDDEN_NEURONS = 10
 # Nombre de neurones pour la couche de sortie
@@ -27,7 +27,7 @@ OUTPUT_NEURONS = 10
 # Pas d'apprentissage
 LEARNING_STEP = 0.1
 # Nombre d'itérations d'apprentissage
-LEARNING_ITERATIONS = 100000
+LEARNING_ITERATIONS = 10000
 # Nombre d'itérations de tests
 TEST_ITERATIONS = 1000
 
@@ -251,11 +251,11 @@ def testStage(p):
     # i va valoir itérativement les valeurs dans indices / NB on aurait aussi pu écrire "for j in xrange(10): i = indices[j]"
     for i in indices:
         p.test(i)
-    print 
     print "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
     e = (p.nb_wrong / p.nb_read) * 100
     print "POURCENTAGE D'ERREUR :", e
     print "FIN DE LA PHASE DE TEST"
+    print p
 # FIN FONCTION testStage
 
 if __name__ == '__main__':

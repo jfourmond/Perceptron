@@ -19,7 +19,7 @@ INPUT = 784
 # Nombre de neurones pour la couche d'entrée
 INPUT_NEURONS = 10
 # Nombre de couches cachées (sachant que les couches "visibles" sont au nombre de deux : couche d'entrée et couche de sortie)
-HIDDEN_LAYERS = 7
+HIDDEN_LAYERS = 0
 # Nombre de neurones par couche cachée
 HIDDEN_NEURONS = 10
 # Nombre de neurones pour la couche de sortie
@@ -30,10 +30,6 @@ LEARNING_STEP = 0.1
 LEARNING_ITERATIONS = 100000
 # Nombre d'itérations de tests
 TEST_ITERATIONS = 1000
-
-# ... POUR DEBOGAGE ...
-LAST_VALUE = -1
-OCC = 0
 
 class Perceptron:
 	# Le Perceptrion multi-couches, c'est :
@@ -87,15 +83,6 @@ class Perceptron:
         label = numpy.argmax(target)
         # 1. Calcul de la sortie de chaque neurone i de chaque couche l du réseau par propagation couche par couche de l'activité
         final_output = self.computeOutput(image)
-        # ... POUR DEBOGAGE ...
-        value = self.anylisis(final_output)
-        global LAST_VALUE
-        global OCC
-        if value == LAST_VALUE:
-            OCC += 1
-        else:
-            OCC = 0
-        LAST_VALUE = value
         self.current_input = numpy.append(image, 1)
         # 2. Pour chaque neurone i de la couche n de sortie, calculer l'erreur
         self.computeOutputError(target, final_output)
@@ -103,9 +90,6 @@ class Perceptron:
         self.retroPropagate()
         # 4. Modifier chaque poids
         self.updateWeight()
-        # ... POUR DEBOGAGE ...
-        if OCC > 50:
-            print "DETECTION D'UN COMPORTEMENT INHABITUEL..."
     # FIN METHODE learn
 
     # Test du réseau

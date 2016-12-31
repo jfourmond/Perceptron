@@ -27,7 +27,7 @@ Le programme s'exécute sans arguments, en ligne de commande :
 
 ## Pourcentage d'erreurs en fonction de différents paramètres
 
-[Tableur regroupant les résultats](https://docs.google.com/spreadsheets/d/1DXshHQmfKDHbYvKog93c83oNjd8v94TPZoVbogYacHA/edit?usp=sharing)
+[Tableur regroupant les résultats](https://goo.gl/g2Elc6)
 
 ## Explications & Détails
 

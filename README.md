@@ -58,8 +58,8 @@ Ce détail peut être à corriger.
 Les bases de données d'apprentissage sont au nombre de 3 :
 
 - **mnist.pkl.gz**, qui contient tous les chiffres
-- **mnist0-4.pkl.gz**, qui contient uniquement les chiffres de 0 à 4
-- **mnist5-9.pkl.gz**, qui contient uniquement les chiffres de 5 a 9 
+- **mnist0-4.pkl.gz**, qui contient uniquement les chiffres de 0 à 4
+- **mnist5-9.pkl.gz**, qui contient uniquement les chiffres de 5 à 9 
 
 Elles sont dérivées de la base [MNIST](http://yann.lecun.com/exdb/mnist/) qui contient des images de chiffres manuscrits (images de taille 28*28).
 Chaque base de données est structurée comme suit : ((tableau image apprentissage, tableau label apprentissage), (tableau image test, tableau label test)).

@@ -11,9 +11,10 @@ from __future__ import division
 import gzip # pour décompresser les données
 import cPickle # pour désérialiser les données
 import numpy # pour pouvoir utiliser des matrices
-import matplotlib.pyplot as plt # pour l'affichage
 import math
 
+# Base
+BASE = 'mnist.pkl.gz'
 # Nombre d'inputs
 INPUT = 784
 # Nombre de neurones pour la couche d'entrée
@@ -25,9 +26,9 @@ HIDDEN_NEURONS = 10
 # Nombre de neurones pour la couche de sortie
 OUTPUT_NEURONS = 10
 # Pas d'apprentissage
-LEARNING_STEP = 0.1
+LEARNING_STEP = 0.3
 # Nombre d'itérations d'apprentissage
-LEARNING_ITERATIONS = 10000
+LEARNING_ITERATIONS = 100000
 # Nombre d'itérations de tests
 TEST_ITERATIONS = 1000
 
@@ -261,7 +262,7 @@ def testStage(p):
 if __name__ == '__main__':
     p = Perceptron(INPUT_NEURONS, HIDDEN_LAYERS, HIDDEN_NEURONS, OUTPUT_NEURONS)
     print p
-    data = cPickle.load(gzip.open('mnist.pkl.gz'))
+    data = cPickle.load(gzip.open(BASE))
     # Etape d'apprentissage
     learningStage(p)
     # Etape de test

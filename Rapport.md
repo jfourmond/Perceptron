@@ -22,15 +22,16 @@ Paramètrage satisfaisant :
 	- Itérations d'apprentissage : **100000**
 	- Itérations de test : **1000**
 	- Pas d'apprentissage : **0.3**
+	- Nombre de couches : 1
 Pour un pourcentage d'erreur de **10.1 %**
 
 ## 2. Etude de l'algorithme
 
 Avec la base **mnist.pkl.gz**, qui contient tous les chiffres :
 
--
--
--
+- 13.4 %
+- 11.6 %
+- 11.0 %
 
 Avec la base **mnist0-4.pkl.gz**, qui contient uniquement les chiffres de 0 à 4 :
 

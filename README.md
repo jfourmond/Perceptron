@@ -9,6 +9,7 @@ Dans le cadre de l'Unité d'Enseignement **Intelligence Bio-Inspirée** du [Mast
 
 Langage :
 - [Python](https://www.python.org/) 2.7.6
+
 ---
 
 ## Objectif
@@ -18,6 +19,10 @@ L'objectif de ce projet est d'implémenter l'algorithme de perceptron multi-couc
 ## Sujet
 
 [Sujet 2016](https://github.com/jfourmond/Perceptron/blob/master/projet.pdf)
+
+## Rapport
+
+[Rapport](https://github.com/jfourmond/Perceptron/blob/master/Rapport.md)
 
 ## Compilation & Exécution
 
@@ -31,8 +36,9 @@ Le programme s'exécute sans arguments, en ligne de commande :
 
 ## Explications & Détails
 
-Dans le cas du programme, 6 paramètres sont ajustables :
+Dans le cas du programme, 7 paramètres sont ajustables :
 
+- ***BASE*** : base d'apprentissage
 - ***INPUT_NEURONS*** : nombre de neurones pour la couche d'entrée
 - ***HIDDEN_LAYERS*** : nombre de couches cachées (sachant que les couches "visibles" sont au nombre de deux : couche d'entrée et couche de sortie)
 - ***HIDDEN_NEURONS*** : nombre de neurones par couche cachée
@@ -48,3 +54,14 @@ Deux autres paramètres ne doivent pas être modifiés pour le bon fonctionnemen
 Il est possible de remarquer un abus de langage avec la variable globale ***INPUT_NEURONS*** : la couche d'entrée devrait contenir l'entrée (c'est à dire les **pixels**).
 Dans le cas présent, on a une entrée (les pixels), une *couche d'entrée*, aucune, une ou plusieurs *couches cachées*, et enfin une *couche de sortie*.
 Ce détail peut être à corriger.
+
+Les bases de données d'apprentissage sont au nombre de 3 :
+
+- **mnist.pkl.gz**, qui contient tous les chiffres
+- **mnist0-4.pkl.gz**, qui contient uniquement les chiffres de 0 à 4
+- **mnist5-9.pkl.gz**, qui contient uniquement les chiffres de 5 a 9 
+
+Elles sont derivées de la base [MNIST](http://yann.lecun.com/exdb/mnist/) qui contient des images de chiffres manuscrits (images de taille 28*28).
+Chaque base de données est structurée comme suit : ((tableau image apprentissage, tableau label apprentissage), (tableau image test, tableau label test)).
+Les images sont stockées sous la forme d'un vecteur de 784 (28*28) valeurs et les labels sont sous la forme d'un codage tabulaire.
+Par exemple si le chiffre representée sur l'image est un 5, son label sera : [0; 0; 0; 0; 0; 1; 0; 0; 0; 0].

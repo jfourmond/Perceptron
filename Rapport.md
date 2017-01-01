@@ -42,6 +42,6 @@ Avec la base **mnist0-4.pkl.gz**, qui contient uniquement les chiffres de 0 à 4
 
 Avec la base **mnist5-9.pkl.gz**, qui contient uniquement les chiffres de 5 à 9 :
 
-- 
--
--
+- 5.5 %
+- 7.1 %
+- 5.2 %

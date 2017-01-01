@@ -32,13 +32,13 @@ Avec la base **mnist.pkl.gz**, qui contient tous les chiffres :
 -
 -
 
-Avec la base **mnist0-4.pkl.gz**, qui contient uniquement les chiffres de 0 à 4 :
+Avec la base **mnist0-4.pkl.gz**, qui contient uniquement les chiffres de 0 à 4 :
 
 -
 -
 -
 
-Avec la base **mnist5-9.pkl.gz**, qui contient uniquement les chiffres de 5 a 9 :
+Avec la base **mnist5-9.pkl.gz**, qui contient uniquement les chiffres de 5 à 9 :
 
 - 
 -

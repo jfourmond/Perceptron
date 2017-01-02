@@ -1,6 +1,6 @@
 # Réseaux de neurones
 
-### Remarques
+### *Remarques*
 
 Au sein du programme est effectué un abus de langage. Il est considéré ici 
 une *couche d'entrée*, une ou plusieurs *couches cachées* et finalement une 
@@ -28,39 +28,44 @@ Pour un pourcentage d'erreur de **10.1 %**
 
 ## 2. Etude de l'algorithme
 
-### Résultats
+### a. En utilisant le paramètrage trouvé, entraînement d'un réseau différent avec chacune des bases d'apprentissage. Pour chaque réseau, test sur les 3 bases de tests
 
-Avec la base **mnist.pkl.gz**, qui contient tous les chiffres :
+#### i. Résultats
 
-- 13.4 %
-- 11.6 %
-- 11.0 %
+Apprentissage sur la base **mnist.pkl.gz**, qui contient tous les chiffres, sur la base de test :
 
-Soit une moyenne de 12 % d'erreurs.
+- **mnist.pkl.gz** : 11.1 %
+- **mnist0-4.pkl.gz** : 10.9 %
+- **mnist5-9.pkl.gz** : 14.7 %
 
-Avec la base **mnist0-4.pkl.gz**, qui contient uniquement les chiffres de 0 à 4 :
+Avec la base **mnist0-4.pkl.gz**, qui contient uniquement les chiffres de 0 à 4, sur la base de test :
 
-- 2.8 %
-- 2.9 %
-- 2.8 %
-
-Soit une moyenne de 3 % d'erreurs.
+- **mnist.pkl.gz** : 49.5 %
+- **mnist0-4.pkl.gz** : 3.5 %
+- **mnist5-9.pkl.gz** : 100.0 %
 
 Avec la base **mnist5-9.pkl.gz**, qui contient uniquement les chiffres de 5 à 9 :
 
-- 5.5 %
-- 7.1 %
-- 5.2 %
+- **mnist.pkl.gz** : 53.7 %
+- **mnist0-4.pkl.gz** : 100.0 %
+- **mnist5-9.pkl.gz** : 6.1 %
 
-Soit une moyenne de 5,9 % d'erreurs.
+#### ii. Discussion
 
-### Discussion
+Les résultats suite à l'apprentissage sur la base **mnist.pkl.gz**, sont globalement semblables.
 
-Il est aisément observable que l'apprentissage des chiffres de 0 à 4 semble avoir été plus 
-efficace que l'apprentissage des chiffres de 5 à 9. L'hypothèse pouvant être émise sur un 
-tel écart est que la similarité entre certains chiffres entraînent des difficultés d'
-apprentissage : les chiffres 6, 8 et 9, par exemple.
+Tandis que sur la base **mnist0-4.pkl.gz**, les résultats sont disparates. Sur cette base, le réseau 
+de neurones a appris uniquement les chiffres de 0 à 4. Le pourcentage de 50 % d'erreurs ressort 
+lorsque le réseau de neurone est testé sur tous les chiffres. Il est possible d'admettre que la majorité 
+de ses erreurs s'effectue sur les chiffres de 5 à 9. D'où, lors du troisième test sur la base 
+**mnist5-9.pkl.gz**, le pourcentage d'erreur de 100 %. 
 
-Mais dans l'ensemble, pour comparaison avec tous les chiffres, l'apprentissage est plus 
-efficace sur une petite base. 5 chiffres sont appris plus facilement par le réseau de 
-neurones que 10 chiffres.
+Récripoquement, la même observation peut se faire sur la base **mnist5-9.pkl.gz**. Les erreurs sur la base 
+de test **mnist.pkl.gz** seraient majoritairement sur les chiffres de 0 à 4. Ainsi, le pourcentage d'erreur 
+est de 100 % sur la base **mnist0-4.pkl.gz**.
+
+### b. Etude de l'évolution des performance du réseau appris sur la base **mnist0-4.pkl.gz** sur les bases tests **mnist0-4.pkl.gz** et **mnist5-9.pkl.gz** lorsque le réseau apprend les chiffres de 5 à 9
+
+Les performances des réseaux ayant appris sur **mnist0-4.pkl.gz** ou **mnist5-9.pkl.gz** et testés sur 
+leurs propres bases sont bien plus élevées que les performances du réseau de neurones ayant appris et 
+étant testé sur **mnist.pkl.gz**.

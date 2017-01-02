@@ -14,9 +14,9 @@ import numpy # pour pouvoir utiliser des matrices
 import math
 
 # Base d'apprentissage
-LEARNING_BASE = 'mnist0-4.pkl.gz'
+LEARNING_BASE = 'mnist5-9.pkl.gz'
 # Bases de test
-TESTING_BASES = ['mnist0-4.pkl.gz', 'mnist5-9.pkl.gz']
+TESTING_BASES = ['mnist.pkl.gz', 'mnist0-4.pkl.gz', 'mnist5-9.pkl.gz']
 # Nombre d'inputs
 INPUT = 784
 # Nombre de neurones pour la couche d'entrée
@@ -79,9 +79,9 @@ class Perceptron:
         self.outputs = []
         target = numpy.zeros(10)
         # Dans la base d'apprentissage (premier [0]), dans la base d'image (deuxième [0]), on récupère l'image à [index]
-        image = data[0][0][index]
+        image = learningBase[0][0][index]
         # Dans la base d'apprentissage ([0]), dans la base des labels ([1]), on récupère le label à [index]
-        target = data[0][1][index]
+        target = learningBase[0][1][index]
         # on récupère à quel chiffre cela correspond (position du 1 dans label)
         label = numpy.argmax(target)
         # 1. Calcul de la sortie de chaque neurone i de chaque couche l du réseau par propagation couche par couche de l'activité
@@ -99,9 +99,9 @@ class Perceptron:
     def test(self, index):
         target = numpy.zeros(10)
         # Dans la base de test (premier [1]), dans la base d'image (deuxième [0]), on récupère l'image à [index]
-        image = data[1][0][index]
+        image = testBase[1][0][index]
         # Dans la base de test ([1]), dans la base des labels ([1]), on récupère le label à [index]
-        target = data[1][1][index]
+        target = testBase[1][1][index]
         # on récupère à quel chiffre cela correspond (position du 1 dans label)
         label = numpy.argmax(target)
 
@@ -109,7 +109,7 @@ class Perceptron:
         # print "SORTIE FINALE :", final_output
         # print "TARGET :", target
         value = self.anylisis(final_output)
-        print "ANALYSIS :", value, ", TARGET :", label
+        # print "ANALYSIS :", value, ", TARGET :", label
         if value == label :
             self.nb_right += 1
         else:
@@ -240,10 +240,10 @@ class Perceptron:
 # FIN DE LA CLASSE PERCEPTRON
 
 def learningStage(p):
-    global data
-    data = cPickle.load(gzip.open(LEARNING_BASE))
+    global learningBase
+    learningBase = cPickle.load(gzip.open(LEARNING_BASE))
     # n = nombre d'images dans le tableau d'apprentissage
-    n = numpy.shape(data[0][0])[0]
+    n = numpy.shape(learningBase[0][0])[0]
     indices = numpy.random.randint(n,size=(LEARNING_ITERATIONS,))
     print "DEBUT DE LA PHASE D'APPRENTISSAGE SUR", LEARNING_ITERATIONS, "ITERATIONS"
     for i in indices:
@@ -252,16 +252,16 @@ def learningStage(p):
 # FIN FONCTION learningStage
 
 def testStage(p):
+    global testBase
     print "DEBUT DE LA PHASE DE TEST SUR", TEST_ITERATIONS, "ITERATIONS"
     for i in range(len(TESTING_BASES)):
-        base = TESTING_BASES[i]
-        data = cPickle.load(gzip.open(base))
+        testBase = cPickle.load(gzip.open(TESTING_BASES[i]))
         # n = nombre d'images dans le tableau de test
-        n = numpy.shape(data[1][0])[0]
+        n = numpy.shape(testBase[1][0])[0]
         indices = numpy.random.randint(n,size=(TEST_ITERATIONS,))
-        for i in indices:
-            p.test(i)
-        print "DANS LA BASE :", base, "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
+        for j in indices:
+            p.test(j)
+        print "DANS LA BASE :", TESTING_BASES[i], "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
         e = (p.nb_wrong / p.nb_read) * 100
         print "POURCENTAGE D'ERREUR :", e
         p.resetStats()

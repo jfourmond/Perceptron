@@ -36,9 +36,10 @@ Le programme s'exécute sans arguments, en ligne de commande :
 
 ## Explications & Détails
 
-Dans le cas du programme, 7 paramètres sont ajustables :
+Dans le cas du programme, 8 paramètres sont ajustables :
 
-- ***BASE*** : base d'apprentissage
+- ***LEARNING_BASE*** : base d'apprentissage
+- ***TESTING_BASES*** : tableau contenant les différentes bases pour le test
 - ***INPUT_NEURONS*** : nombre de neurones pour la couche d'entrée
 - ***HIDDEN_LAYERS*** : nombre de couches cachées (sachant que les couches "visibles" sont au nombre de deux : couche d'entrée et couche de sortie)
 - ***HIDDEN_NEURONS*** : nombre de neurones par couche cachée

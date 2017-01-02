@@ -13,8 +13,10 @@ import cPickle # pour désérialiser les données
 import numpy # pour pouvoir utiliser des matrices
 import math
 
-# Base
-BASE = 'mnist.pkl.gz'
+# Base d'apprentissage
+LEARNING_BASE = 'mnist0-4.pkl.gz'
+# Bases de test
+TESTING_BASES = ['mnist0-4.pkl.gz', 'mnist5-9.pkl.gz']
 # Nombre d'inputs
 INPUT = 784
 # Nombre de neurones pour la couche d'entrée
@@ -220,6 +222,12 @@ class Perceptron:
         return (numpy.argmax(final_output))
     # FIN METHODE anylisis
 
+    def resetStats(self):
+        self.nb_read = 0
+        self.nb_right = 0
+        self.nb_wrong = 0
+    # FIN METHODE resetStats
+
     def __str__(self):
         return "" + str(self.input_neurons) + " neurones d'entrée, " + str(self.hidden_layers) + " couche(s) cachée(s) avec " \
             + str(self.hidden_neurons) + " neurones par couche, " + str(self.output_neurons) + " neurones de sortie."
@@ -232,11 +240,11 @@ class Perceptron:
 # FIN DE LA CLASSE PERCEPTRON
 
 def learningStage(p):
+    global data
+    data = cPickle.load(gzip.open(LEARNING_BASE))
     # n = nombre d'images dans le tableau d'apprentissage
     n = numpy.shape(data[0][0])[0]
-    # on créé un vecteur de (ITERATIONS,) valeurs entières prises aléatoirement entre 0 et n-1
     indices = numpy.random.randint(n,size=(LEARNING_ITERATIONS,))
-    # i va valoir itérativement les valeurs dans indices / NB on aurait aussi pu écrire "for j in xrange(10): i = indices[j]"
     print "DEBUT DE LA PHASE D'APPRENTISSAGE SUR", LEARNING_ITERATIONS, "ITERATIONS"
     for i in indices:
         p.learn(i)
@@ -245,16 +253,18 @@ def learningStage(p):
 
 def testStage(p):
     print "DEBUT DE LA PHASE DE TEST SUR", TEST_ITERATIONS, "ITERATIONS"
-    # n = nombre d'images dans le tableau de test
-    n = numpy.shape(data[1][0])[0]
-    # on créé un vecteur de (ITERATIONS,) valeurs entières prises aléatoirement entre 0 et n-1
-    indices = numpy.random.randint(n,size=(TEST_ITERATIONS,))
-    # i va valoir itérativement les valeurs dans indices / NB on aurait aussi pu écrire "for j in xrange(10): i = indices[j]"
-    for i in indices:
-        p.test(i)
-    print "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
-    e = (p.nb_wrong / p.nb_read) * 100
-    print "POURCENTAGE D'ERREUR :", e
+    for i in range(len(TESTING_BASES)):
+        base = TESTING_BASES[i]
+        data = cPickle.load(gzip.open(base))
+        # n = nombre d'images dans le tableau de test
+        n = numpy.shape(data[1][0])[0]
+        indices = numpy.random.randint(n,size=(TEST_ITERATIONS,))
+        for i in indices:
+            p.test(i)
+        print "DANS LA BASE :", base, "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
+        e = (p.nb_wrong / p.nb_read) * 100
+        print "POURCENTAGE D'ERREUR :", e
+        p.resetStats()
     print "FIN DE LA PHASE DE TEST"
     print p
 # FIN FONCTION testStage
@@ -262,7 +272,6 @@ def testStage(p):
 if __name__ == '__main__':
     p = Perceptron(INPUT_NEURONS, HIDDEN_LAYERS, HIDDEN_NEURONS, OUTPUT_NEURONS)
     print p
-    data = cPickle.load(gzip.open(BASE))
     # Etape d'apprentissage
     learningStage(p)
     # Etape de test

@@ -26,7 +26,7 @@ L'objectif de ce projet est d'implémenter l'algorithme de perceptron multi-couc
 
 ## Compilation & Exécution
 
-Le programme s'exécute sans arguments, en ligne de commande :
+Le programme s'exécute sans argument, en ligne de commande :
 
 	python neural_network.py
 
@@ -66,3 +66,9 @@ Elles sont dérivées de la base [MNIST](http://yann.lecun.com/exdb/mnist/) qui 
 Chaque base de données est structurée comme suit : ((tableau image apprentissage, tableau label apprentissage), (tableau image test, tableau label test)).
 Les images sont stockées sous la forme d'un vecteur de 784 (28*28) valeurs et les labels sont sous la forme d'un codage tabulaire.
 Par exemple si le chiffre représentée sur l'image est un 5, son label sera : [0; 0; 0; 0; 0; 1; 0; 0; 0; 0].
+
+## Améliorations à porter
+
+- Gestion du programme avec arguments
+- Correction de l'abus de langage sur la couche d'entrée
+- Gestion de l'algorithme de manière matricielle

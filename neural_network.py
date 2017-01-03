@@ -222,6 +222,12 @@ class Perceptron:
         return (numpy.argmax(final_output))
     # FIN METHODE anylisis
 
+    def printStats(self):
+        print "DANS LA BASE :", TESTING_BASES[i], "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
+        e = (p.nb_wrong / p.nb_read) * 100
+        print "POURCENTAGE D'ERREUR :", e
+    # FIN METHODE printStats
+
     def resetStats(self):
         self.nb_read = 0
         self.nb_right = 0
@@ -261,9 +267,7 @@ def testStage(p):
         indices = numpy.random.randint(n,size=(TEST_ITERATIONS,))
         for j in indices:
             p.test(j)
-        print "DANS LA BASE :", TESTING_BASES[i], "LUS :", p.nb_read, "BONS :", p.nb_right, "FAUX :", p.nb_wrong
-        e = (p.nb_wrong / p.nb_read) * 100
-        print "POURCENTAGE D'ERREUR :", e
+        p.printStats()
         p.resetStats()
     print "FIN DE LA PHASE DE TEST"
     print p

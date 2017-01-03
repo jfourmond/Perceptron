@@ -1,5 +1,9 @@
 # Réseaux de neurones
 
+Par Jérôme FOURMOND,
+
+Projet github disponible au lien suivant : [https://github.com/jfourmond/Perceptron](https://github.com/jfourmond/Perceptron)
+
 ### *Remarques*
 
 Au sein du programme est effectué un abus de langage. Il est considéré ici 
@@ -11,6 +15,15 @@ une *couche cachée*.
 Les chiffres donnés par la suite sur le nombre de *couches cachées* pour un 
 paramètrage satisfaisant devraient donc être incrémentées de **1** pour 
 inclure la *fausse couche d'entrée*.
+
+L'algorithme implémenté ici parcoure à l'aide de nombreuses itérations, chaque 
+poids de chaque neurone de chaque couche. Pour une optimisation du temps 
+d'exécution du programme, il serait avisé de gérer l'algorithme de manière 
+matricielle, à l'aide des nombreuses fonctions de ***numpy***.
+
+Pour le choix du paramètrage, par manque de temps, les nombres de neurones 
+par couche n'a pas varié durant les tests. Seul le nombre de couches cachées 
+l'a été.
 
 ## 1. Codage de l'algorithme
 
@@ -56,16 +69,23 @@ Les résultats suite à l'apprentissage sur la base **mnist.pkl.gz**, sont globa
 
 Tandis que sur la base **mnist0-4.pkl.gz**, les résultats sont disparates. Sur cette base, le réseau 
 de neurones a appris uniquement les chiffres de 0 à 4. Le pourcentage de 50 % d'erreurs ressort 
-lorsque le réseau de neurone est testé sur tous les chiffres. Il est possible d'admettre que la majorité 
-de ses erreurs s'effectue sur les chiffres de 5 à 9. D'où, lors du troisième test sur la base 
-**mnist5-9.pkl.gz**, le pourcentage d'erreur de 100 %. 
+lorsque le réseau de neurone est testé sur tous les chiffres. Il est possible d'admettre que la 
+majorité de ses erreurs s'effectue sur les chiffres de 5 à 9. D'où, lors du troisième test sur 
+la base **mnist5-9.pkl.gz**, le pourcentage d'erreur de 100 %. 
 
-Récripoquement, la même observation peut se faire sur la base **mnist5-9.pkl.gz**. Les erreurs sur la base 
-de test **mnist.pkl.gz** seraient majoritairement sur les chiffres de 0 à 4. Ainsi, le pourcentage d'erreur 
-est de 100 % sur la base **mnist0-4.pkl.gz**.
+Récripoquement, la même observation peut se faire sur la base **mnist5-9.pkl.gz**. Les erreurs sur 
+la base de test **mnist.pkl.gz** seraient majoritairement sur les chiffres de 0 à 4. Ainsi, le 
+pourcentage d'erreur est de 100 % sur la base **mnist0-4.pkl.gz**.
+
+Il est possible d'en conclure qu'un réseau de neurone n'apprend, logiquement, que ce qui lui ait 
+donné. Mais également que plus l'univers est petit et plus il apprend efficacement.
 
 ### b. Etude de l'évolution des performance du réseau appris sur la base **mnist0-4.pkl.gz** sur les bases tests **mnist0-4.pkl.gz** et **mnist5-9.pkl.gz** lorsque le réseau apprend les chiffres de 5 à 9
 
 Les performances des réseaux ayant appris sur **mnist0-4.pkl.gz** ou **mnist5-9.pkl.gz** et testés sur 
 leurs propres bases sont bien plus élevées que les performances du réseau de neurones ayant appris et 
 étant testé sur **mnist.pkl.gz**.
+Il est également observable que le pourcentage d'erreur du réseau ayant appris sur **mnist5-9.pkl.gz** 
+est plus elevé que celui du réseau ayant appris sur **mnist0-4.pkl.gz**. Il est possible d'émettre 
+l'hypothèse que l'apprentissage des chiffres de 5 à 9 est plus difficile (plus grandes similarités 
+entre 6, 8 et 9) que les chiffres de 0 à 4.

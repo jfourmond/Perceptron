@@ -67,7 +67,7 @@ Chaque base de données est structurée comme suit : ((tableau image apprentissa
 Les images sont stockées sous la forme d'un vecteur de 784 (28*28) valeurs et les labels sont sous la forme d'un codage tabulaire.
 Par exemple si le chiffre représentée sur l'image est un 5, son label sera : [0; 0; 0; 0; 0; 1; 0; 0; 0; 0].
 
-## Améliorations à porter
+## Améliorations à apporter
 
 - Gestion du programme avec arguments
 - Correction de l'abus de langage sur la couche d'entrée
